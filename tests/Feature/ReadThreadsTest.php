@@ -42,7 +42,7 @@ class ReadThreadsTest extends TestCase
     {
         $reply = factory(Reply::class)->create((['thread_id' => $this->thread->id]));
 
-        $response = $this->get('/threads/' . $this->thread->id);
+        $response = $this->get(route('threads.show', [$this->thread]));
 
         $response->assertSee($reply->body);
     }

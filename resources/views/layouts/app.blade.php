@@ -12,6 +12,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        .reply-body.panel-body:after, .reply-body.panel-body:before {
+            content: none;
+        }
+
+        .reply-body {
+            white-space: pre-wrap;
+        }
+
+        body {
+            margin-bottom: 50px;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -36,7 +50,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        &nbsp;<li><a href="{{ route('threads.index') }}">All Threads</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

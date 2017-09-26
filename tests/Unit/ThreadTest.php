@@ -22,7 +22,7 @@ class ThreadTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory(Thread::class)->create();;
+        $this->thread = create(Thread::class);
     }
 
     /** @test */
@@ -42,7 +42,7 @@ class ThreadTest extends TestCase
     {
         $this->thread->addReply([
             'body' => 'Foobar',
-        ], factory(User::class)->create());
+        ],create(User::class));
 
         $this->assertCount(1, $this->thread->replies);
     }

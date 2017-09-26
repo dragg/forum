@@ -15,7 +15,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function guests_may_not_create_threads()
     {
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('login'));
@@ -24,9 +24,9 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
-        $this->be(factory(User::class)->create());
+        $this->signIn();
 
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('threads.show', [1]));
 

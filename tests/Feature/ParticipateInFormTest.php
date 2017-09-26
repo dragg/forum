@@ -17,9 +17,9 @@ class ParticipateInFormTest extends TestCase
     /** @test */
     public function unauthenticated_user_may_not_add_replies()
     {
-        $thread = factory(Thread::class)->create();
+        $thread = create(Thread::class);
 
-        $reply = factory(Reply::class)->make();
+        $reply = make(Reply::class);
         $this->post(route('threads.replies.store', [$thread]), $reply->toArray())
             ->assertStatus(302)
             ->assertRedirect(route('login'));
@@ -28,11 +28,11 @@ class ParticipateInFormTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
-        $this->be(factory(User::class)->create());
+        $this->signIn();
 
-        $thread = factory(Thread::class)->create();
+        $thread = create(Thread::class);
 
-        $reply = factory(Reply::class)->make();
+        $reply = make(Reply::class);
         $this->post(route('threads.replies.store', [$thread]), $reply->toArray())
             ->assertRedirect(route('threads.show', [$thread]));
 

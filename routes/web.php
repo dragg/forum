@@ -20,5 +20,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('threads', 'ThreadsController', ['only' => ['index', 'show']]);
+Route::resource('threads', 'ThreadsController', ['only' => ['index', 'store', 'show']]);
 Route::resource('threads.replies', 'RepliesController', ['only' => ['store']]);

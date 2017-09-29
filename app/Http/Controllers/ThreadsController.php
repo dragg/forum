@@ -20,9 +20,11 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel)
     {
-        $threads = Thread::latest()->get();
+        $threads = $channel->exists ? $channel->threads() : Thread::query();
+
+        $threads = $threads->latest()->get();
 
         return view('threads.index', compact('threads'));
     }

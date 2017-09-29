@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -19,15 +20,11 @@ class CreateThreadsTest extends TestCase
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('login'));
-    }
 
-    /** @test */
-    public function guests_cannot_see_the_create_thread_page()
-    {
         $this->get(route('threads.create'))
             ->assertRedirect(route('login'));
     }
-    
+
     /** @test */
     public function an_authenticated_user_can_create_new_forum_threads()
     {
@@ -35,7 +32,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = make(Thread::class);
         $this->post(route('threads.store'), $thread->toArray())
-            ->assertRedirect(route('threads.show', [1]));
+            ->assertRedirect(route('threads.show', [$thread->channel->slug, 1]));
 
         $this->get(route('threads.index'))
             ->assertSee($thread->title)

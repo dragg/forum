@@ -21,7 +21,6 @@ class ParticipateInFormTest extends TestCase
 
         $reply = make(Reply::class);
         $this->post(route('threads.replies.store', [$thread]), $reply->toArray())
-            ->assertStatus(302)
             ->assertRedirect(route('login'));
     }
 
@@ -34,9 +33,9 @@ class ParticipateInFormTest extends TestCase
 
         $reply = make(Reply::class);
         $this->post(route('threads.replies.store', [$thread]), $reply->toArray())
-            ->assertRedirect(route('threads.show', [$thread]));
+            ->assertRedirect(route('threads.show', [$thread->channel->slug, $thread]));
 
-        $this->get(route('threads.show', $thread))
+        $this->get(route('threads.show', [$thread->channel->slug, $thread]))
             ->assertSee($reply->body);
     }
 }

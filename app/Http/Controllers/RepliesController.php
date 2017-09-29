@@ -23,6 +23,6 @@ class RepliesController extends Controller
     {
         $thread->addReply(['body' => request('body')], auth()->user());
 
-        return redirect()->route('threads.show', [$thread]);
+        return redirect()->route('threads.show', [$thread->channel->slug, $thread]);
     }
 }

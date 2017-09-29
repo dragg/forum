@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Threads\ReplyStore;
 use App\Models\Thread;
 
 class RepliesController extends Controller
@@ -16,12 +17,13 @@ class RepliesController extends Controller
 
 
     /**
+     * @param ReplyStore $request
      * @param Thread $thread
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Thread $thread)
+    public function store(ReplyStore $request, Thread $thread)
     {
-        $thread->addReply(['body' => request('body')], auth()->user());
+        $thread->addReply(['body' => $request->get('body')], auth()->user());
 
         return redirect()->route('threads.show', [$thread->channel->slug, $thread]);
     }

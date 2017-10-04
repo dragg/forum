@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Filters\Filters;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -42,5 +44,25 @@ class Thread extends Model
         $reply->owner()->associate($user);
         $reply->thread()->associate($this);
         $reply->save();
+    }
+
+    /**
+     * @param Builder $query
+     * @param Filters $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, Filters $filters)
+    {
+        return $filters->apply($query);
+    }
+
+    /**
+     * @param Builder $query
+     * @param $channel
+     * @return Builder
+     */
+    public function scopeFindByChannel($query, $channel)
+    {
+        return $query->where('channel_id', $channel->id);
     }
 }

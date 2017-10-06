@@ -15,9 +15,11 @@
           </div>
         </div>
 
-        @foreach($thread->replies as $reply)
+        @foreach($replies as $reply)
           @include('threads.reply')
         @endforeach
+
+        {{ $replies->links() }}
 
         @auth
         <form method="POST" action="{{ route('threads.replies.store', [$thread]) }}">

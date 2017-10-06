@@ -10,6 +10,16 @@ class Thread extends Model
 {
     protected $fillable = ['title', 'body'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder) {
+            $builder->withCount('replies');
+        });
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

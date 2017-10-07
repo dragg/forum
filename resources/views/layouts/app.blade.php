@@ -25,6 +25,15 @@
       body {
         margin-bottom: 50px;
       }
+
+      .level {
+        display: flex;
+        align-items: center;
+      }
+
+      .flex {
+        flex: 1;
+      }
     </style>
   </head>
   <body>
@@ -57,11 +66,14 @@
                    aria-expanded="false">Browse <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="{{ route('threads.index') }}">All Threads</a>
+                    <a href="{{ route('threads.index') }}">All Threads</a></li>
 
-                    @auth
-                    <a href="{{ route('threads.index', ['by' => auth()->user()->name]) }}">My Threads</a>
-                    @endauth
+                  @auth
+                  <li><a href="{{ route('threads.index', ['by' => auth()->user()->name]) }}">My Threads</a></li>
+                  @endauth
+
+                  <li>
+                    <a href="{{ route('threads.index', ['popular' => 1]) }}">Popular Threads</a>
                   </li>
                 </ul>
               </li>

@@ -4,16 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ParticipateInFormTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function unauthenticated_user_may_not_add_replies()
     {

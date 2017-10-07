@@ -21,6 +21,12 @@ class FavoritesController extends Controller
      */
     public function store(Reply $reply)
     {
-        return $reply->favorite(auth()->id());
+        $favorite = $reply->favorite(auth()->id());
+
+        if (request()->wantsJson()) {
+            return $favorite;
+        }
+
+        return back();
     }
 }

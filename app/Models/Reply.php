@@ -44,7 +44,7 @@ class Reply extends Model
      */
     public function favorite($userId)
     {
-        if (! $this->hasFavorited($userId)) {
+        if (! $this->isFavorited($userId)) {
             return $this->favorites()->create(['user_id' => $userId]);
         }
     }
@@ -53,7 +53,7 @@ class Reply extends Model
      * @param $userId
      * @return bool
      */
-    protected function hasFavorited($userId): bool
+    public function isFavorited($userId): bool
     {
         return $this->favorites()->where('user_id', $userId)->exists();
     }

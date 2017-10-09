@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use Favoritable;
+
     protected $fillable = ['body'];
+
+    protected $with = ['owner', 'favorites'];
 
     /**
      * A reply has one owner.
@@ -28,33 +33,4 @@ class Reply extends Model
         return $this->belongsTo(Thread::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favorited');
-    }
-
-    /**
-     * Favorite a reply for user.
-     *
-     * @param $userId
-     * @return Model
-     */
-    public function favorite($userId)
-    {
-        if (! $this->isFavorited($userId)) {
-            return $this->favorites()->create(['user_id' => $userId]);
-        }
-    }
-
-    /**
-     * @param $userId
-     * @return bool
-     */
-    public function isFavorited($userId): bool
-    {
-        return $this->favorites()->where('user_id', $userId)->exists();
-    }
 }

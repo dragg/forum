@@ -10,15 +10,9 @@ class Thread extends Model
 {
     protected $fillable = ['title', 'body'];
 
-    protected static function boot()
-    {
-        parent::boot();
+    protected $with = ['creator', 'channel'];
 
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
-    }
-
+    protected $withCount = ['replies'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

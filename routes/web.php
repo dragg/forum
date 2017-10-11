@@ -25,3 +25,5 @@ Route::get('threads/{channel}', 'ThreadsController@index')->name('channel.thread
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 Route::resource('threads.replies', 'RepliesController', ['only' => ['store']]);
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
+
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');

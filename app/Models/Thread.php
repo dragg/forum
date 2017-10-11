@@ -15,6 +15,19 @@ class Thread extends Model
     protected $withCount = ['replies'];
 
     /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($thread) {
+            $thread->replies()->delete();
+        });
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function replies()

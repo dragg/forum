@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Activity;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
@@ -87,6 +88,8 @@ class ManageThreadsTest extends TestCase
 
         $this->assertDatabaseMissing($thread->getTable(), ['id' => $thread->id]);
         $this->assertDatabaseMissing($reply->getTable(), ['id' => $reply->id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 
     private function publishThread(array $overrides = [])

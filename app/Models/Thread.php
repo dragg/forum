@@ -25,7 +25,7 @@ class Thread extends Model
         parent::boot();
 
         static::deleting(function ($thread) {
-            $thread->replies()->delete();
+            $thread->replies->each->delete();
         });
     }
 

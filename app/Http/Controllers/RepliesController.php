@@ -25,6 +25,6 @@ class RepliesController extends Controller
     {
         $thread->addReply(['body' => $request->get('body')], auth()->user());
 
-        return redirect()->route('threads.show', [$thread->channel->slug, $thread]);
+        return back()->with('flash', 'Your reply has been left.');
     }
 }

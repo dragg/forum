@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use App\Filters\Filters;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     protected $fillable = ['title', 'body'];
 
     protected $with = ['creator', 'channel'];
@@ -25,7 +28,6 @@ class Thread extends Model
             $thread->replies()->delete();
         });
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

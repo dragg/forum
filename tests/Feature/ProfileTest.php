@@ -22,6 +22,8 @@ class ProfileTest extends TestCase
     {
         $user = create(User::class);
 
+        $this->signIn($user);
+
         $thread = create(Thread::class, ['user_id' => $user->id]);
 
         $this->get("/profiles/{$user->name}")

@@ -26,8 +26,7 @@ class ParticipateInFormTest extends TestCase
         $thread = create(Thread::class);
 
         $reply = make(Reply::class);
-        $this->post(route('threads.replies.store', [$thread]), $reply->toArray())
-            ->assertRedirect(route('threads.show', [$thread->channel->slug, $thread]));
+        $this->post(route('threads.replies.store', [$thread]), $reply->toArray());
 
         $this->get(route('threads.show', [$thread->channel->slug, $thread]))
             ->assertSee($reply->body);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Threads\ReplyStore;
+use App\Models\Reply;
 use App\Models\Thread;
 
 class RepliesController extends Controller
@@ -26,5 +27,14 @@ class RepliesController extends Controller
         $thread->addReply(['body' => $request->get('body')], auth()->user());
 
         return back()->with('flash', 'Your reply has been left.');
+    }
+
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        return back();
     }
 }

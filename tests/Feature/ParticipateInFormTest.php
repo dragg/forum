@@ -71,4 +71,35 @@ class ParticipateInFormTest extends TestCase
         $this->assertDatabaseMissing($reply->getTable(), ['id' => $reply->id]);
     }
 
+    /** @test */
+    public function unauthorized_users_cannot_update_replies()
+    {
+        $reply = create(Reply::class);
+
+        $this->patch(route('replies.update', $reply))
+            ->assertRedirect('login');
+
+        $this->signIn()
+            ->patchJson(route('replies.update', $reply))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function authorized_users_can_update_replies()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $updatedReply = 'New changed body.';
+
+        $this
+            ->patch(route('replies.update', $reply), ['body' => $updatedReply]);
+
+        $this->assertDatabaseHas($reply->getTable(), [
+            'id' => $reply->id,
+            'body' => $updatedReply
+        ]);
+    }
+
 }

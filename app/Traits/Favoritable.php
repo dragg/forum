@@ -34,7 +34,7 @@ trait Favoritable
     }
 
     /**
-     * Favorite a reply for user.
+     * Favorite an item for user.
      *
      * @param $userId
      * @return Model
@@ -47,11 +47,30 @@ trait Favoritable
     }
 
     /**
+     * Unfavorite an item for user.
+     *
+     * @param $userId
+     * @return Model
+     */
+    public function unfavorite($userId)
+    {
+        return $this->favorites()->where('user_id', $userId)->delete();
+    }
+
+    /**
      * @param $userId
      * @return bool
      */
     public function isFavorited($userId): bool
     {
         return ! ! $this->favorites->where('user_id', $userId)->count();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited(auth()->id());
     }
 }

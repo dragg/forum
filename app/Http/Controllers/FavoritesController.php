@@ -29,4 +29,13 @@ class FavoritesController extends Controller
 
         return back();
     }
+
+    /**
+     * @param Reply $reply
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function destroy(Reply $reply)
+    {
+        $reply->unfavorite(auth()->id());
+    }
 }

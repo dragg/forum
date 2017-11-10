@@ -5,6 +5,7 @@ require('bootstrap-sass');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
+  'Accept': 'application/json',
   'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
   'X-Requested-With': 'XMLHttpRequest',
 };

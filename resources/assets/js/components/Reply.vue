@@ -23,6 +23,16 @@
           });
       },
 
+      destroy() {
+        axios.delete('/replies/' + this.attributes.id, {})
+          .then(() => {
+
+            $(this.$el).fadeOut(300, () => {
+              flash('Your reply was been deleted!');
+            });
+          });
+      },
+
       edit() {
         this.tmpBody = this.body;
         this.editing = true;

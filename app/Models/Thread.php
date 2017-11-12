@@ -54,15 +54,18 @@ class Thread extends Model
     }
 
     /**
-     * @param array $reply
+     * @param array $replyData
      * @param User $user
+     * @return Reply
      */
-    public function addReply(array $reply, User $user)
+    public function addReply(array $replyData, User $user)
     {
-        $reply = new Reply($reply);
+        $reply = new Reply($replyData);
         $reply->owner()->associate($user);
         $reply->thread()->associate($this);
         $reply->save();
+
+        return $reply;
     }
 
     /**

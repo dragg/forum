@@ -29,23 +29,11 @@
             </div>
           </div>
 
-          <replies :data="{{ json_encode($thread->replies) }}" @remove="repliesCount--"></replies>
-
-          @auth
-          <form method="POST" action="{{ route('threads.replies.store', [$thread]) }}">
-            {{ csrf_field() }}
-
-            <div class="form-group">
-                <textarea name="body" id="body" class="form-control" placeholder="Have something to say?"
-                          rows="5"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-default">Post</button>
-          </form>
-          @else
-            <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.
-            </p>
-          @endauth
+          <replies :data="{{ json_encode($thread->replies) }}"
+                   :thread-id={{ $thread->id }}
+                   @added="repliesCount++"
+          @removed="repliesCount--"
+          ></replies>
         </div>
         <div class="col-md-4">
           <div class="panel panel-default">

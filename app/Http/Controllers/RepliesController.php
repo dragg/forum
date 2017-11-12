@@ -24,7 +24,11 @@ class RepliesController extends Controller
      */
     public function store(ReplyStore $request, Thread $thread)
     {
-        $thread->addReply(['body' => $request->get('body')], auth()->user());
+        $reply = $thread->addReply(['body' => $request->get('body')], auth()->user());
+
+        if ($request->wantsJson()) {
+            return $reply->load('owner');
+        }
 
         return back()->with('flash', 'Your reply has been left.');
     }

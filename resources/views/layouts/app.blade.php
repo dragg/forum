@@ -43,6 +43,13 @@
         display: none;
       }
     </style>
+
+    <script>
+      window.App = {!! json_encode([
+        'user' => Auth::user(),
+        'signedIn' => Auth::check()
+      ]) !!};
+    </script>
   </head>
   <body>
     <div id="app">

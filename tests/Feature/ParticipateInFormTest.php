@@ -32,6 +32,10 @@ class ParticipateInFormTest extends TestCase
             'thread_id' => $thread->id,
             'body' => $reply->body,
         ]);
+        $this->assertDatabaseHas($thread->getTable(), [
+            'id' => $thread->id,
+            'replies_count' => 1
+        ]);
     }
 
     /** @test */
@@ -71,6 +75,7 @@ class ParticipateInFormTest extends TestCase
             ->assertStatus(200);
 
         $this->assertDatabaseMissing($reply->getTable(), ['id' => $reply->id]);
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
 
     /** @test */

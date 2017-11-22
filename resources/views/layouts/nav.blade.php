@@ -34,6 +34,7 @@
 
             <li>
               <a href="{{ route('threads.index', ['popular' => 1]) }}">Popular Threads</a>
+              <a href="{{ route('threads.index', ['unanswered' => 1]) }}">Unanswered Threads</a>
             </li>
           </ul>
         </li>

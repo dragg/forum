@@ -15,8 +15,6 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
-    protected $withCount = ['replies'];
-
     /**
      * Boot the model.
      */

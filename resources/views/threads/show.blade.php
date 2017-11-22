@@ -29,11 +29,7 @@
             </div>
           </div>
 
-          <replies :data="{{ json_encode($thread->replies) }}"
-                   :thread-id={{ $thread->id }}
-                   @added="repliesCount++"
-          @removed="repliesCount--"
-          ></replies>
+          <replies :thread-id={{ $thread->id }} @added="repliesCount++" @removed="repliesCount--"></replies>
         </div>
         <div class="col-md-4">
           <div class="panel panel-default">

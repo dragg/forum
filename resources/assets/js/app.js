@@ -8,6 +8,7 @@ window.Vue.prototype.authorize = function (handler) {
 require('./bootstrap');
 
 Vue.component('flash', require('./components/Flash.vue'));
+Vue.component('paginator', require('./components/Paginator.vue'));
 
 Vue.component('thread', require('./pages/Thread.vue'));
 

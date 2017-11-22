@@ -28,8 +28,10 @@ class ParticipateInFormTest extends TestCase
         $reply = make(Reply::class);
         $this->post(route('threads.replies.store', [$thread]), $reply->toArray());
 
-        $this->get(route('threads.show', [$thread->channel->slug, $thread]))
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas($reply->getTable(), [
+            'thread_id' => $thread->id,
+            'body' => $reply->body,
+        ]);
     }
 
     /** @test */
@@ -66,7 +68,7 @@ class ParticipateInFormTest extends TestCase
 
         $this
             ->deleteJson(route('replies.delete', $reply))
-            ->assertStatus(302);
+            ->assertStatus(200);
 
         $this->assertDatabaseMissing($reply->getTable(), ['id' => $reply->id]);
     }

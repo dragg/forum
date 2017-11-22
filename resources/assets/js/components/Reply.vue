@@ -5,7 +5,7 @@
         <h5 class="flex">
           <a :href="`/profiles/${data.owner.name}`">
             {{ data.owner.name }}
-          </a> said {{ data.created_at }}
+          </a> said <span v-text="ago"></span>
         </h5>
 
         <div v-if="signedIn">
@@ -36,6 +36,7 @@
 
 <script>
   import Favorite from './Favorite.vue';
+  import moment from 'moment';
 
   export default {
     props: ['data'],
@@ -51,6 +52,10 @@
     },
 
     computed: {
+      ago() {
+        return moment(this.data.created_at).fromNow();
+      },
+
       signedIn() {
         return window.App.signedIn;
       },
@@ -78,6 +83,8 @@
         axios.delete('/replies/' + this.data.id, {})
           .then(() => {
             this.$emit('deleted', this.data.id);
+
+            flash('Reply was deleted!');
           });
       },
 

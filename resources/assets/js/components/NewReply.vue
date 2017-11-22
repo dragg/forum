@@ -20,11 +20,12 @@
 
 <script>
   export default {
-    props: ['endpoint'],
+    props: ['threadId'],
 
     data() {
       return {
         body: '',
+        endpoint: `/threads/${this.threadId}/replies`,
       };
     },
 
@@ -41,6 +42,8 @@
             this.body = '';
 
             this.$emit('created', data);
+
+            flash('Your reply has been added.');
           })
       },
     }

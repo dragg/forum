@@ -39,7 +39,7 @@ class ThreadTest extends TestCase
     {
         $this->thread->addReply([
             'body' => 'Foobar',
-        ],create(User::class));
+        ], create(User::class));
 
         $this->assertCount(1, $this->thread->replies);
     }
@@ -49,4 +49,68 @@ class ThreadTest extends TestCase
     {
         $this->assertInstanceOf(Channel::class, $this->thread->channel);
     }
+
+    /** @test */
+    public function it_can_be_subscribed_to()
+    {
+        $thread = $this->thread;
+
+        $this->signIn();
+        $user = auth()->user();
+
+        $thread->subscribe($user);
+
+        $this->assertEquals(
+            1,
+            $thread->subscriptions()->where('user_id', $user->id)->count()
+        );
+    }
+
+    /** @test */
+    public function it_can_be_unsubscribed_from()
+    {
+        $thread = $this->thread;
+
+        $this->signIn();
+        $user = auth()->user();
+
+        $thread->subscribe($user);
+
+        $thread->unsubscribe($user);
+
+        $this->assertCount(
+            0,
+            $thread->subscriptions
+        );
+    }
+
+    /** @test */
+    public function it_know_if_the_user_is_subscribed_to_it()
+    {
+        $thread = $this->thread;
+
+        $user = create(User::class);
+
+        $this->assertFalse($thread->isSubscribedTo($user));
+
+        $thread->subscribe($user);
+
+        $this->assertTrue($thread->isSubscribedTo($user));
+    }
+
+    /** @test */
+    public function it_know_authorized_user_is_subscribed_to_it()
+    {
+        $thread = $this->thread;
+
+        $user = create(User::class);
+        $this->signIn($user);
+
+        $this->assertFalse($thread->isSubscribedTo);
+
+        $thread->subscribe($user);
+
+        $this->assertTrue($thread->isSubscribedTo);
+    }
+
 }

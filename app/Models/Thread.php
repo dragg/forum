@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filters\Filters;
+use App\Notifications\ThreadWasUpdated;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -51,19 +52,9 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
     }
 
-    /**
-     * @param array $replyData
-     * @param User $user
-     * @return Reply
-     */
-    public function addReply(array $replyData, User $user)
+    public function subscriptions()
     {
-        $reply = new Reply($replyData);
-        $reply->owner()->associate($user);
-        $reply->thread()->associate($this);
-        $reply->save();
-
-        return $reply;
+        return $this->hasMany(ThreadSubscription::class);
     }
 
     /**
@@ -84,5 +75,76 @@ class Thread extends Model
     public function scopeFindByChannel($query, $channel)
     {
         return $query->where('channel_id', $channel->id);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->isSubscribedTo(auth()->user());
+    }
+
+    public function subscribe($userId)
+    {
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        }
+
+        $this->subscriptions()->create([
+            'user_id' => $userId,
+        ]);
+
+        return $this;
+    }
+
+    public function unsubscribe($userId)
+    {
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        }
+
+        $this->subscriptions()
+            ->where('user_id', $userId)
+            ->delete();
+
+        return $this;
+    }
+
+    /**
+     * @param $userId
+     * @return bool
+     */
+    public function isSubscribedTo($userId): bool
+    {
+        if ($userId instanceof User) {
+            $userId = $userId->id;
+        }
+
+        return $this->subscriptions()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * @param array $replyData
+     * @param User $user
+     * @return Reply
+     */
+    public function addReply(array $replyData, User $user)
+    {
+        $reply = new Reply($replyData);
+        $reply->owner()->associate($user);
+        $reply->thread()->associate($this);
+        $reply->save();
+
+        // Prepare notifications for all subscribers.
+        $this->subscriptions
+            ->filter(function ($subscription) use ($user) {
+                return $subscription->user_id != $user->id;
+            })
+            ->each(function ($subscription) use ($reply) {
+                $subscription->notify(new ThreadWasUpdated($this, $reply));
+            });
+
+        return $reply;
     }
 }

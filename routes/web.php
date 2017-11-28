@@ -32,4 +32,10 @@ Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.de
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.favorite');
 
+Route::post('threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscription');
+Route::delete('threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.subscription');
+
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
+
+Route::get('/notifications', 'UserNotificationsController@index')->name('notifications.index');
+Route::delete('/notifications/{notifications}', 'UserNotificationsController@destroy')->name('notifications.delete');

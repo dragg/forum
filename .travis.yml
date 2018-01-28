@@ -7,6 +7,8 @@ before_script:
   - cp .env.example .env
   - composer self-update
   - composer install --no-interaction
+  - npm i
+  - yarn run prod
 
 script:
   - php artisan key:generate
